@@ -1,9 +1,11 @@
 package kr.co.tjoeun.listview_20200706
 
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import kotlinx.android.synthetic.main.activity_main.*
 import kr.co.tjoeun.listview_20200706.adapters.StudentAdapter
 import kr.co.tjoeun.listview_20200706.datas.Student
@@ -52,11 +54,21 @@ class MainActivity : AppCompatActivity() {
         studentListView.setOnItemLongClickListener { parent, view, position, id ->
 
 
+//            정말 그 사람을 지울지 확인. => 확인 OK 일때 삭제
+            val deleteAlert = AlertDialog.Builder(this)
+            deleteAlert.setTitle("학생 목록 삭제")
+            deleteAlert.setMessage("정말 이 학생을 삭제할거냐?")
+            deleteAlert.setPositiveButton("Confirm", DialogInterface.OnClickListener { dialog, which ->
+//                확인을 누르면 실제 삭제 처리
 //            오래 눌린 사람을 명단에서 삭제
-            mStudentList.removeAt(position)
+                mStudentList.removeAt(position)
 
 //            어댑터에게 새로고침 시키기
-            mAdapter.notifyDataSetChanged()
+                mAdapter.notifyDataSetChanged()
+            })
+            deleteAlert.setNegativeButton("Cancle",null)
+            deleteAlert.show()
+
 
 //            LongClick은 BooLean 값을 리턴해 줘야함
             return@setOnItemLongClickListener true
